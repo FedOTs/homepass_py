@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     DB_NAME: str
     SECRET_KEY: str
     ALGORITHM: str
+    PASSWORD_ENCRYPTION_KEY: str
     
     model_config = SettingsConfigDict(
         env_file=os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
@@ -27,3 +28,6 @@ def get_db_url():
 
 def get_auth_data():
     return {"secret_key": settings.SECRET_KEY, "algorithm": settings.ALGORITHM}
+
+def get_pw_key():
+    return settings.PASSWORD_ENCRYPTION_KEY

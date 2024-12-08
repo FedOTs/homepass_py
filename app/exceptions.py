@@ -21,3 +21,5 @@ NoUserException = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail
 ForbiddenException = HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Недостаточно прав")
 
 UserNotFound = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User не найден")
+
+PasswordNotFound = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Пароль не найден")

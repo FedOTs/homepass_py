@@ -40,3 +40,36 @@ class PasswordDAO(BaseDAO):
                 'message': f"Пароль с ID {id} успешно обновлен.",
                 'status': 'success'
             }
+         
+    @classmethod
+    async def delete(cls, id, user_id):
+         async with async_session_maker() as session:
+            query = select(cls.model).filter_by(id=id)
+            result = await session.execute(query)
+            password = result.scalar_one_or_none()
+            if not password:
+                 return {
+                    'message': f"Пароль с ID {id} не найден.",
+                    'status': 'error'
+                }
+            if password.user_id != user_id:
+                return {
+                    'message': "У вас нет прав на удаление этого пароля.",
+                    'status': 'error'
+                }
+                    # Удаляем блог
+            await session.delete(password)
+            await session.flush()
+            try:
+                await session.commit()
+            except SQLAlchemyError as e:
+                await session.rollback()
+                return {
+                    'message': f"Произошла ошибка при удалении пароля {str(e)}.",
+                    'status': 'error'
+                }
+            return {
+                'message': f"Пароль с ID {id} успешно удален.",
+                'status': 'success'
+            }
+         

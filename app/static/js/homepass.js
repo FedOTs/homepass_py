@@ -114,7 +114,6 @@ async function handleAddPassword(event) {
     }
 }
 
-
 // Edit password
 async function editPassword() {
     if (!selectedPasswordId) return;
@@ -143,35 +142,36 @@ async function editPassword() {
         console.error('Error updating password:', error);
     }
 }
-/*
-
 // Delete password
 async function deletePassword() {
     if (!selectedPasswordId) return;
-    
-    const token = checkAuth();
-    if (confirm('Are you sure you want to delete this password?')) {
+    const deletePassword = {
+        id: selectedPasswordId
+    };
+    if (confirm('Вы уверены что желаете удалить пароль?')) {
         try {
-            const response = await fetch(`https://api.example.com/passwords/${selectedPasswordId}`, {
+            const response = await fetch(`/homepass/delete_password`, {
                 method: 'DELETE',
                 headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(deletePassword)
             });
 
             if (!response.ok) throw new Error('Failed to delete password');
 
             await loadPasswords();
             selectedPasswordId = null;
-            document.getElementById('serviceInput').value = '';
-            document.getElementById('usernameInput').value = '';
+            document.getElementById('nameInput').value = '';
+            document.getElementById('loginInput').value = '';
+            document.getElementById('urlInput').value = '';
             document.getElementById('passwordInput').value = '';
+            document.getElementById('passwordInput').type = 'password';
         } catch (error) {
             console.error('Error deleting password:', error);
         }
     }
 }
 
-*/
 // Initial load
 document.addEventListener('DOMContentLoaded', loadPasswords);
