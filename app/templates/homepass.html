@@ -1,0 +1,80 @@
+<html>
+    <head>
+        <base href="/">
+        <meta charset="UTF-8">
+        <title>Хранилище паролей - Главная страница</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='styles/homepass.css') }}">
+    </head>
+<body>
+    <div class="header">
+        <h1>Хранилище паролей</h1>
+        <button class="add-btn" onclick="showAddModal()">Добавить пароль</button>
+    </div>
+    
+    <div class="main-container">
+        <div class="password-list" id="passwordList">
+        </div>
+        
+        <div class="password-details">
+            <div class="details-container">
+                <div class="input-group">
+                    <label>Наименование</label>
+                    <input type="text" id="nameInput">
+                </div>
+                <div class="input-group">
+                    <label>Имя пользователя</label>
+                    <input type="text" id="loginInput">
+                </div>
+                <div class="input-group">
+                    <label>Ссылка на портал</label>
+                    <input type="text" id="urlInput">
+                </div>
+                <div class="input-group">
+                    <label>Пароль</label>
+                    <div class="password-field">
+                        <input type="password" id="passwordInput">
+                        <button class="show-btn" onclick="togglePassword()">Показать</button>
+                        <button class="show-btn" onclick="copyToClipboard()">Скопировать</button>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="edit-btn" onclick="editPassword()">Изменить</button>
+                    <button class="delete-btn" onclick="deletePassword()">Удалить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="addModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Добавить новый пароль</h2>
+            <form id="addPasswordForm" onsubmit="handleAddPassword(event)">
+                <div class="input-group">
+                    <label>Наименование</label>
+                    <input type="text" id="newName" required>
+                </div>
+                <div class="input-group">
+                    <label>Имя пользователя</label>
+                    <input type="text" id="newLogin" required>
+                </div>
+                <div class="input-group">
+                    <label>Ссылка на портал</label>
+                    <input type="text" id="newUrl">
+                </div>
+                <div class="input-group">
+                    <label>Пароль</label>
+                    <div class="password-field">
+                        <input type="password" id="newPassword" required>
+                        <button type="button" class="show-btn" onclick="toggleNewPassword()">Показать</button>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button type="submit" class="edit-btn">Сохранить</button>
+                    <button type="button" class="delete-btn" onclick="hideAddModal()">Отменить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="{{ url_for('static', path='js/homepass.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: #272822;
+    color: #f8f8f2;
+}
+
+.header {
+    background: #1e1f1c;
+    padding: 20px;
+    border-bottom: 1px solid #3e3d32;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.add-btn {
+    background: #a6e22e;
+    color: #272822;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.add-btn:hover {
+    background: #66d9ef;
+}
+
+.main-container {
+    display: flex;
+    height: calc(100vh - 70px);
+}
+
+.password-list {
+    width: 300px;
+    background: #1e1f1c;
+    border-right: 1px solid #3e3d32;
+    overflow-y: auto;
+}
+
+.password-item {
+    padding: 15px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid #3e3d32;
+    transition: all 0.3s;
+}
+
+.password-item:hover {
+    background: #34352f;
+}
+
+.password-item.active {
+    background: #34352f;
+    border-left: 4px solid #f92672;
+}
+
+.password-details {
+    flex: 1;
+    padding: 30px;
+}
+
+.details-container {
+    background: #1e1f1c;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #f8f8f2;
+}
+
+.password-field {
+    display: flex;
+    gap: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    background: #34352f;
+    border: 1px solid #3e3d32;
+    border-radius: 5px;
+    color: #f8f8f2;
+    font-size: 1em;
+}
+
+input:focus {
+    outline: none;
+    border-color: #fd971f;
+    box-shadow: 0 0 0 3px rgba(253, 151, 31, 0.2);
+}
+
+.show-btn {
+    background: #66d9ef;
+    color: #272822;
+    border: none;
+    padding: 0 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.show-btn:hover {
+    background: #f92672;
+    color: #f8f8f2;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.edit-btn, .delete-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.edit-btn {
+    background: #66d9ef;
+    color: #272822;
+}
+
+.delete-btn {
+    background: #f92672;
+    color: #f8f8f2;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: #1e1f1c;
+    padding: 30px;
+    border-radius: 10px;
+    width: 400px;
+}
+
+.modal-title {
+    margin-bottom: 20px;
+    color: #f8f8f2;
+}
