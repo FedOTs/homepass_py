@@ -1,4 +1,4 @@
-from sqlalchemy import String
+from sqlalchemy import String, Boolean
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 from app.database import Base
 from app.passwords.models import Password
@@ -15,4 +15,5 @@ class User(Base):
         back_populates="user",
         cascade="all, delete-orphan"
     )
+    is_verified: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
 

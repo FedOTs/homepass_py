@@ -18,6 +18,8 @@ NoJwtException = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=
 
 NoUserException = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Не найден ID пользователя")
 
+NoEmailsException = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Не найден пользователь с таким email")
+
 ForbiddenException = HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Недостаточно прав")
 
 UserNotFound = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User не найден")

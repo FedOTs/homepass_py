@@ -50,6 +50,11 @@ const handleFormSubmit = async (formType, url, fields) => {
     if (data && formType === 'login') {
         window.location.href = '/homepass';
     }
+
+    if (data && formType === 'register') {
+        alert('Вы успешно зарегистрированы. Потвердите регистрацию перейдя по ссылке, которая была отправлена вам на email');
+        window.location.href = '/auth';
+    }
 };
 
 // Обработка формы входа

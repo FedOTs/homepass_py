@@ -1,12 +1,14 @@
-from fastapi import APIRouter, Response
+from fastapi import APIRouter, Response, status
 from fastapi.requests import Request
-from fastapi.responses import Response, HTMLResponse
+from fastapi.responses import Response, HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
-from app.exceptions import UserAlreadyExistsException, IncorrectEmailOrPasswordException, PasswordMismatchException
+from app.exceptions import UserAlreadyExistsException, IncorrectEmailOrPasswordException, PasswordMismatchException,NoEmailsException
 from app.users.auth import get_password_hash, authenticate_user, create_access_token
 from app.users.dao import UsersDAO
-from app.users.schemas import SUserAuth, SUserRegister
-
+from app.users.schemas import SUserAuth, SUserRegister, EmailModel
+from app.email import mail, create_message
+from app.config import settings
+from app.utils import create_url_safe_token, decode_url_safe_token
 
 """
     Заметка: tags нужен для документации Swagger
@@ -33,8 +35,24 @@ async def register_user(user_data: SUserRegister) -> dict:
         email=user_data.email,
         hashed_password=hashed_password
     )
+
+    token = create_url_safe_token({"email":user_data.email})
+
+    link = f"http://{settings.DOMAIN}/auth/verify/{token}"
+
+    html_message = f"""
+    <h1> Потвердите свой email </h1>
+    <p> Пожалуйста перейдите по данной <a href="{link}">ссылке</a> чтобы потвердить свой email<.p>
+    """
+    message = create_message(
+        recipients=[user_data.email],
+        subject="Потвердите свой email",
+        body=html_message
+    )
+
+    await mail.send_message(message)
     
-    return {'message': 'Вы успешно зарегистрированы!'}
+    return {'message': 'Вы успешно зарегистрированы! Потвердите свой email'}
 
 @router.post("/login/")
 async def auth_user(response:Response, user_data:SUserAuth):
@@ -49,3 +67,40 @@ async def auth_user(response:Response, user_data:SUserAuth):
 async def logout_user(response:Response):
     response.delete_cookie(key="users_access_token")
     return {'message':'Пользователь успешно вышел из системы'}
+
+@router.post('/send_mail')
+async def send_mail(emails:EmailModel):
+    emails = emails.addresses
+    html = "<h1>Добро пожаловать в homepass</h1>"
+    message = create_message(
+        recipients=emails,
+        subject="Добро пожаловать",
+        body=html
+    )
+
+    await mail.send_message(message)
+
+    return {"message": "Email sent successfully"}
+
+@router.get("/verify/{token}")
+async def verify(token:str):
+    print(token)
+    token_data = decode_url_safe_token(token)
+    print(token_data)
+    user_email = token_data.get('token_data').get('email')
+    print(user_email)
+    result = {"error": "Неизвестная ошибка"}
+
+    if user_email:
+        user = await UsersDAO.find_one_or_none(email=user_email)
+        if not user:
+            raise NoEmailsException
+    
+        result = await UsersDAO.updateIsVerification(user.id)
+
+        if result["status"] == "success":
+            return RedirectResponse('/auth', status_code=status.HTTP_303_SEE_OTHER) 
+        else:
+            return result
+        
+    return result
